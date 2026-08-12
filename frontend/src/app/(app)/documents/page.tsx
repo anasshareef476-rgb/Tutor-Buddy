@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
@@ -9,17 +9,17 @@ const uploadDocument = (file: File) => {
   const form = new FormData(); form.append('file', file)
   return fetch(`${API_BASE}/documents/upload`, { method: 'POST', body: form }).then(r => r.json())
 }
-
 interface Document { id: number; filename: string; file_type: string; status: string; created_at: string }
+const statusColor: Record<string,string> = { completed: '#22c55e', processing: '#f59e0b', pending: 'rgba(255,255,255,0.4)', error: '#ef4444' }
 
 export default function DocumentsPage() {
   const router = useRouter()
   const [docs, setDocs] = useState<Document[]>([])
   const [uploading, setUploading] = useState(false)
   const [msg, setMsg] = useState('')
+  const [msgType, setMsgType] = useState<'success'|'error'|'info'>('info')
 
   useEffect(() => { loadDocs() }, [])
-
   const loadDocs = async () => { try { setDocs(await getDocuments()) } catch { } }
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,26 +28,21 @@ export default function DocumentsPage() {
     setUploading(true)
     try {
       await uploadDocument(file)
-      setMsg(`✅ "${file.name}" uploaded and queued for processing!`)
+      setMsg(`"${file.name}" uploaded and queued for processing!`)
+      setMsgType('success')
       await loadDocs()
-    } catch (err: any) {
-      setMsg('❌ Upload failed. Check backend is running.')
-    } finally { setUploading(false) }
-  }
-
-  const statusColor: Record<string, string> = {
-    completed: '#22c55e', processing: '#f59e0b', pending: '#6c63ff', error: '#ef4444'
-  }
-  const statusIcon: Record<string, string> = {
-    completed: '✅', processing: '⚙️', pending: '⏳', error: '❌'
+    } catch { setMsg('Upload failed. Check backend is running.'); setMsgType('error') }
+    finally { setUploading(false) }
   }
 
   return (
     <div style={{ maxWidth: 900, margin: '0 auto' }} className="fade-in">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 32, flexWrap: 'wrap', gap: 16 }}>
         <div>
-          <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 4 }}>📄 Documents</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>Upload PDFs, notes, and files to power the AI Tutor with your course material.</p>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px,3.5vw,40px)', fontWeight: 400, letterSpacing: '-0.04em', color: '#fff', marginBottom: 8 }}>
+            Documents
+          </h1>
+          <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Upload PDFs, notes and files to power the AI Tutor with your material.</p>
         </div>
         <label className="btn-accent" style={{ cursor: 'pointer' }}>
           {uploading ? '⏳ Uploading...' : '+ Upload File'}
@@ -56,52 +51,45 @@ export default function DocumentsPage() {
       </div>
 
       {msg && (
-        <div style={{ background: 'rgba(108,99,255,0.1)', border: '1px solid rgba(108,99,255,0.3)', borderRadius: 10, padding: '10px 16px', marginBottom: 20, fontSize: 14 }}>
-          {msg} <button onClick={() => setMsg('')} style={{ float: 'right', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}>×</button>
+        <div className={`toast toast-${msgType}`} style={{ marginBottom: 20 }}>
+          <span>{msg}</span>
+          <button onClick={() => setMsg('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit', fontSize: 18, lineHeight: 1, marginLeft: 12 }}>×</button>
         </div>
       )}
 
-      {/* Supported formats info */}
-      <div className="glass" style={{ borderRadius: 12, padding: '12px 20px', marginBottom: 24, display: 'flex', gap: 20 }}>
-        {[['📄 PDF', 'Lecture slides, textbooks'], ['📝 TXT', 'Plain text notes'], ['📃 DOCX', 'Word documents']].map(([fmt, desc]) => (
+      <div className="glass" style={{ borderRadius: 14, padding: '12px 20px', marginBottom: 24, display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+        {[['◻ PDF', 'Lecture slides, textbooks'], ['◻ TXT', 'Plain text notes'], ['◻ DOCX', 'Word documents']].map(([fmt, desc]) => (
           <div key={fmt} style={{ fontSize: 13 }}>
-            <span style={{ fontWeight: 600 }}>{fmt}</span>
-            <span style={{ color: 'var(--text-muted)', marginLeft: 6 }}>{desc}</span>
+            <span style={{ fontFamily: 'var(--font-display)', color: '#fff', marginRight: 6 }}>{fmt}</span>
+            <span style={{ color: 'var(--text-muted)' }}>{desc}</span>
           </div>
         ))}
       </div>
 
       {docs.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '80px 20px', color: 'var(--text-muted)' }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>📂</div>
-          <h3 style={{ fontWeight: 600, marginBottom: 8 }}>No documents uploaded yet</h3>
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: 52, marginBottom: 16, color: 'rgba(255,255,255,0.2)' }}>◻</div>
+          <h3 style={{ fontWeight: 600, marginBottom: 8, color: '#fff', fontSize: 18 }}>No documents uploaded yet</h3>
           <p style={{ fontSize: 14 }}>Upload a PDF or text file to get started with RAG-powered AI Tutor.</p>
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {docs.map(doc => (
-            <div 
-              key={doc.id} 
+            <div
+              key={doc.id}
               onClick={() => router.push(`/documents/${doc.id}`)}
-              className="glass glass-hover" 
+              className="glass glass-hover"
               style={{ borderRadius: 14, padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 16, cursor: 'pointer' }}
             >
-              <div style={{ fontSize: 28 }}>
-                {doc.file_type === 'pdf' ? '📕' : doc.file_type === 'txt' ? '📄' : '📃'}
-              </div>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, color: 'rgba(255,255,255,0.4)', flexShrink: 0 }}>◻</div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontWeight: 600, fontSize: 15, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.filename}</div>
+                <div style={{ fontWeight: 600, fontSize: 15, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.filename}</div>
                 <div style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 2 }}>{doc.file_type.toUpperCase()} · {new Date(doc.created_at).toLocaleDateString()}</div>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 12px', borderRadius: 20, background: `${statusColor[doc.status] || '#888'}18`, border: `1px solid ${statusColor[doc.status] || '#888'}44`, fontSize: 13, color: statusColor[doc.status] || '#888' }}>
-                <span>{statusIcon[doc.status] || '?'}</span>
-                <span style={{ textTransform: 'capitalize' }}>{doc.status}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 12px', borderRadius: 999, background: `${statusColor[doc.status] || '#888'}1a`, border: `1px solid ${statusColor[doc.status] || '#888'}44`, fontSize: 12, color: statusColor[doc.status] || '#888', flexShrink: 0, textTransform: 'capitalize' }}>
+                {doc.status}
               </div>
-              <button 
-                onClick={(e) => { e.stopPropagation(); deleteDocument(doc.id).then(loadDocs) }} 
-                style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 18, padding: 4 }}
-                title="Delete document"
-              >🗑</button>
+              <button onClick={e => { e.stopPropagation(); deleteDocument(doc.id).then(loadDocs) }} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 16, padding: 4, flexShrink: 0 }} title="Delete">×</button>
             </div>
           ))}
         </div>

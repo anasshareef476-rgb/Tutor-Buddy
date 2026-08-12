@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { getToken, logout } from '@/lib/auth'
@@ -44,22 +44,22 @@ export default function ProgressPage() {
 
   return (
     <div style={{ maxWidth: 900, margin: '0 auto' }} className="fade-in">
-      <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 28 }}>📊 Learning Progress</h1>
+      <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 28 }}>ðŸ“Š Learning Progress</h1>
 
       {/* Summary cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 32 }}>
         {[
-          { label: 'Cards Reviewed', value: isMounted ? '0' : '-', icon: '🃏' },
-          { label: 'Quizzes Taken', value: isMounted ? metrics.quizzes.toString() : '-', icon: '📝' },
-          { label: 'Avg Quiz Score', value: isMounted ? `${metrics.scorePercent}%` : '-', icon: '🎯' },
-          { label: 'Study Streak', value: isMounted ? '0 days' : '-', icon: '🔥' },
-          { label: 'Total Study Time', value: isMounted ? `${(metrics.quizzes * 0.1).toFixed(1)}h` : '-', icon: '⏱️' },
-          { label: 'Questions Answered', value: isMounted ? metrics.questions.toString() : '-', icon: '🧠' },
+          { label: 'Cards Reviewed', value: isMounted ? '0' : '-', icon: 'ðŸƒ' },
+          { label: 'Quizzes Taken', value: isMounted ? metrics.quizzes.toString() : '-', icon: 'ðŸ“' },
+          { label: 'Avg Quiz Score', value: isMounted ? `${metrics.scorePercent}%` : '-', icon: 'ðŸŽ¯' },
+          { label: 'Study Streak', value: isMounted ? '0 days' : '-', icon: 'ðŸ”¥' },
+          { label: 'Total Study Time', value: isMounted ? `${(metrics.quizzes * 0.1).toFixed(1)}h` : '-', icon: 'â±ï¸' },
+          { label: 'Questions Answered', value: isMounted ? metrics.questions.toString() : '-', icon: 'ðŸ§ ' },
         ].map(s => (
           <div key={s.label} className="glass glass-hover" style={{ borderRadius: 14, padding: '18px 16px' }}>
             <div style={{ fontSize: 24, marginBottom: 8 }}>{s.icon}</div>
             <div style={{ fontSize: 24, fontWeight: 800, background: 'var(--gradient-1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{s.value}</div>
-            <div style={{ color: 'var(--text-secondary)', fontSize: 12, marginTop: 4 }}>{s.label}</div>
+            <div style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 4 }}>{s.label}</div>
           </div>
         ))}
       </div>
@@ -74,7 +74,7 @@ export default function ProgressPage() {
                 <span style={{ fontWeight: 500 }}>{s.name}</span>
                 <span style={{ color: s.color, fontWeight: 700 }}>{s.progress}%</span>
               </div>
-              <div style={{ height: 8, background: 'var(--bg-card-hover)', borderRadius: 4 }}>
+              <div style={{ height: 8, background: 'rgba(255,255,255,0.08)', borderRadius: 4 }}>
                 <div style={{ height: '100%', width: `${s.progress}%`, background: s.color, borderRadius: 4, transition: 'width 0.5s' }} />
               </div>
             </div>
@@ -90,7 +90,7 @@ export default function ProgressPage() {
             <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
               <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{val}m</div>
               <div style={{ width: '100%', height: `${Math.min(100, (val / 100) * 100)}%`, background: 'var(--gradient-1)', borderRadius: '6px 6px 0 0', opacity: 0.85, transition: 'height 0.5s' }} />
-              <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>{weekDays[i]}</div>
+              <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{weekDays[i]}</div>
             </div>
           ))}
         </div>
@@ -98,3 +98,4 @@ export default function ProgressPage() {
     </div>
   )
 }
+

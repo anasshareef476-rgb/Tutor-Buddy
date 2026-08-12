@@ -1,7 +1,7 @@
-'use client'
+﻿'use client'
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { setToken } from '@/lib/auth'
 import { useRouter } from 'next/navigation'
 
 export default function RegisterPage() {
@@ -12,9 +12,7 @@ export default function RegisterPage() {
   const router = useRouter()
 
   const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
+    e.preventDefault(); setLoading(true); setError('')
     try {
       const res = await fetch('http://localhost:8001/api/v1/auth/register', {
         method: 'POST',
@@ -23,50 +21,48 @@ export default function RegisterPage() {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.detail || 'Registration failed')
-      
-      router.push('/login')
-    } catch (err: any) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
+      const loginRes = await fetch('http://localhost:8001/api/v1/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ username: email, password }),
+      })
+      const loginData = await loginRes.json()
+      if (loginRes.ok) { setToken(loginData.access_token); router.push('/dashboard') }
+      else router.push('/login')
+    } catch (err: any) { setError(err.message) }
+    finally { setLoading(false) }
   }
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-        className="glass" style={{ width: '100%', maxWidth: 400, padding: 40, borderRadius: 24, textAlign: 'center' }}
-      >
-        <div style={{ fontSize: 48, marginBottom: 16 }}>🚀</div>
-        <h1 style={{ fontSize: 24, fontWeight: 800, marginBottom: 8 }}>Create an Account</h1>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 32 }}>Start your personalized learning journey today.</p>
-        
-        {error && <div style={{ background: 'rgba(239,68,68,0.1)', color: '#ef4444', padding: 12, borderRadius: 12, marginBottom: 20, fontSize: 14 }}>{error}</div>}
-        
-        <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <input 
-            type="email" placeholder="Email address" required
-            value={email} onChange={e => setEmail(e.target.value)}
-            style={{ width: '100%', padding: '14px 16px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--bg-card)', color: '#fff', fontSize: 15 }}
-          />
-          <input 
-            type="password" placeholder="Password" required
-            value={password} onChange={e => setPassword(e.target.value)}
-            style={{ width: '100%', padding: '14px 16px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--bg-card)', color: '#fff', fontSize: 15 }}
-          />
-          <button 
-            type="submit" disabled={loading}
-            style={{ width: '100%', padding: 14, borderRadius: 12, border: 'none', background: 'linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%)', color: '#fff', fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', fontSize: 16, marginTop: 8 }}
-          >
-            {loading ? 'Creating account...' : 'Sign Up'}
+    <div style={{ minHeight:'100vh', background:'#000', display:'flex', alignItems:'center', justifyContent:'center', padding:20 }}>
+      <div className="page-enter" style={{ width:'100%', maxWidth:420 }}>
+        <div style={{ textAlign:'center', marginBottom:40 }}>
+          <div style={{ width:56, height:56, borderRadius:'50%', background:'#fff', display:'grid', placeItems:'center', margin:'0 auto 16px', boxShadow:'0 8px 32px rgba(255,255,255,0.15)' }}>
+            <span style={{ fontSize:26 }}>🎓</span>
+          </div>
+          <h1 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(26px,4vw,38px)', fontWeight:400, letterSpacing:'-0.04em', color:'#fff', marginBottom:8 }}>Create Account</h1>
+          <p style={{ color:'var(--text-muted)', fontSize:14 }}>Start your AI-powered learning journey today.</p>
+        </div>
+
+        {error && (
+          <div className="toast toast-error" style={{ marginBottom:20 }}>
+            <span>{error}</span>
+            <button onClick={() => setError('')} style={{ background:'none', border:'none', color:'inherit', cursor:'pointer', fontSize:18 }}>×</button>
+          </div>
+        )}
+
+        <form onSubmit={handleRegister} style={{ display:'flex', flexDirection:'column', gap:14 }}>
+          <input type="email" placeholder="Email address" required value={email} onChange={e => setEmail(e.target.value)} className="input-dark" style={{ fontSize:15, padding:'14px 18px' }} />
+          <input type="password" placeholder="Password (min 6 chars)" required minLength={6} value={password} onChange={e => setPassword(e.target.value)} className="input-dark" style={{ fontSize:15, padding:'14px 18px' }} />
+          <button type="submit" disabled={loading} className="btn-accent" style={{ width:'100%', padding:'14px', borderRadius:14, fontSize:15, marginTop:4 }}>
+            {loading ? <span className="spinner" style={{ margin:'0 auto' }}/> : 'Create Account'}
           </button>
         </form>
-        
-        <p style={{ marginTop: 24, color: 'var(--text-secondary)', fontSize: 14 }}>
-          Already have an account? <Link href="/login" style={{ color: '#3b82f6', textDecoration: 'none', fontWeight: 600 }}>Log in</Link>
+        <p style={{ marginTop:24, color:'var(--text-muted)', fontSize:14, textAlign:'center' }}>
+          Already have an account? <Link href="/login" style={{ color:'#fff', fontWeight:600 }}>Log in</Link>
         </p>
-      </motion.div>
+      </div>
     </div>
   )
 }
+

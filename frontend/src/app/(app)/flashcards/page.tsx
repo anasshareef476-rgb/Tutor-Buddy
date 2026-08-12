@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { useState, useEffect } from 'react'
 
 const API_BASE = 'http://localhost:8001/api/v1'
@@ -49,7 +49,7 @@ export default function FlashcardsPage() {
     const card = dueCards[reviewIndex]
     await reviewCard(card.id, rating as any)
     if (reviewIndex + 1 >= dueCards.length) {
-      setMsg('🎉 Session complete! All due cards reviewed.')
+      setMsg('ðŸŽ‰ Session complete! All due cards reviewed.')
       setMode('decks'); loadDecks()
     } else {
       setReviewIndex(i => i + 1)
@@ -73,7 +73,7 @@ export default function FlashcardsPage() {
     const res = await generateFlashcards(selectedDeck.id, genText)
     setGenText('')
     setLoading(false)
-    setMsg(`✨ Generated ${res.generated} flashcards!`)
+    setMsg(`âœ¨ Generated ${res.generated} flashcards!`)
     loadDecks()
     setMode('decks')
   }
@@ -84,16 +84,16 @@ export default function FlashcardsPage() {
     <div style={{ maxWidth: 800, margin: '0 auto' }} className="fade-in">
       {msg && (
         <div style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.3)', borderRadius: 10, padding: '10px 16px', marginBottom: 20, color: '#22c55e', fontSize: 14 }}>
-          {msg} <button onClick={() => setMsg('')} style={{ float: 'right', background: 'none', border: 'none', color: '#22c55e', cursor: 'pointer' }}>×</button>
+          {msg} <button onClick={() => setMsg('')} style={{ float: 'right', background: 'none', border: 'none', color: '#22c55e', cursor: 'pointer' }}>Ã—</button>
         </div>
       )}
 
       {mode === 'decks' && (
         <>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-            <h1 style={{ fontSize: 26, fontWeight: 800 }}>🃏 Flashcard Decks</h1>
+            <h1 style={{ fontFamily:'var(--font-display)', fontSize: 26, fontWeight: 400 }}>ðŸƒ Flashcard Decks</h1>
             <div style={{ display: 'flex', gap: 10 }}>
-              <input value={newDeckName} onChange={e => setNewDeckName(e.target.value)} placeholder="New deck name..." style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 10, padding: '8px 14px', color: 'var(--text-primary)', fontSize: 14 }} />
+              <input value={newDeckName} onChange={e => setNewDeckName(e.target.value)} placeholder="New deck name..." style={{ background: '#111113', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, padding: '8px 14px', color: '#fff', fontSize: 14 }} />
               <button className="btn-accent" onClick={async () => { if (!newDeckName) return; await createDeck(newDeckName); setNewDeckName(''); loadDecks() }}>+ Create</button>
             </div>
           </div>
@@ -105,15 +105,15 @@ export default function FlashcardsPage() {
               <div key={deck.id} className="glass glass-hover" style={{ borderRadius: 16, padding: 20, cursor: 'pointer' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
                   <h3 style={{ fontWeight: 700, fontSize: 16 }}>{deck.name}</h3>
-                  <button onClick={() => deleteDeck(deck.id).then(loadDecks)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 14 }}>🗑</button>
+                  <button onClick={() => deleteDeck(deck.id).then(loadDecks)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 14 }}>ðŸ—‘</button>
                 </div>
                 <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
-                  <div style={{ fontSize: 13, color: 'var(--text-secondary)' }}><strong style={{ color: 'var(--text-primary)' }}>{deck.total_cards}</strong> cards</div>
+                  <div style={{ fontSize: 13, color: 'var(--text-muted)' }}><strong style={{ color: '#fff' }}>{deck.total_cards}</strong> cards</div>
                   <div style={{ fontSize: 13, color: deck.due_cards > 0 ? '#f59e0b' : 'var(--text-secondary)' }}><strong>{deck.due_cards}</strong> due</div>
                 </div>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                  <button onClick={() => { setSelectedDeck(deck); setMode('add') }} style={{ fontSize: 12, padding: '5px 12px', borderRadius: 8, background: 'var(--bg-card-hover)', border: '1px solid var(--border)', color: 'var(--text-secondary)', cursor: 'pointer' }}>+ Add Card</button>
-                  <button onClick={() => { setSelectedDeck(deck); setMode('generate') }} style={{ fontSize: 12, padding: '5px 12px', borderRadius: 8, background: 'var(--bg-card-hover)', border: '1px solid var(--border)', color: 'var(--text-secondary)', cursor: 'pointer' }}>✨ AI Generate</button>
+                  <button onClick={() => { setSelectedDeck(deck); setMode('add') }} style={{ fontSize: 12, padding: '5px 12px', borderRadius: 8, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: 'var(--text-muted)', cursor: 'pointer' }}>+ Add Card</button>
+                  <button onClick={() => { setSelectedDeck(deck); setMode('generate') }} style={{ fontSize: 12, padding: '5px 12px', borderRadius: 8, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: 'var(--text-muted)', cursor: 'pointer' }}>âœ¨ AI Generate</button>
                   {deck.due_cards > 0 && <button className="btn-accent" onClick={() => startReview(deck)} style={{ fontSize: 12, padding: '5px 14px' }}>Review</button>}
                 </div>
               </div>
@@ -125,33 +125,33 @@ export default function FlashcardsPage() {
       {mode === 'review' && currentCard && (
         <div style={{ textAlign: 'center' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-            <button onClick={() => { setMode('decks'); loadDecks() }} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: 14 }}>← Back</button>
-            <span style={{ color: 'var(--text-secondary)', fontSize: 14 }}>{reviewIndex + 1} / {dueCards.length}</span>
+            <button onClick={() => { setMode('decks'); loadDecks() }} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 14 }}>â† Back</button>
+            <span style={{ color: 'var(--text-muted)', fontSize: 14 }}>{reviewIndex + 1} / {dueCards.length}</span>
           </div>
 
           {/* Flashcard */}
           <div
             onClick={() => setFlipped(f => !f)}
             style={{
-              background: flipped ? 'rgba(108,99,255,0.15)' : 'var(--bg-card)',
-              border: `1px solid ${flipped ? 'rgba(108,99,255,0.4)' : 'var(--border)'}`,
+              background: flipped ? 'rgba(255,255,255,0.08)' : '#111113',
+              border: `1px solid ${flipped ? 'rgba(255,255,255,0.2)' : 'var(--border)'}`,
               borderRadius: 20, padding: '60px 40px', cursor: 'pointer', minHeight: 240,
               display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column',
               transition: 'all 0.3s', marginBottom: 24,
-              boxShadow: flipped ? '0 8px 40px rgba(108,99,255,0.2)' : 'none',
+              boxShadow: flipped ? '0 8px 40px rgba(255,255,255,0.08)' : 'none',
             }}
           >
-            <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 16, textTransform: 'uppercase', letterSpacing: 1 }}>{flipped ? 'Answer' : 'Question — click to flip'}</div>
+            <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 16, textTransform: 'uppercase', letterSpacing: 1 }}>{flipped ? 'Answer' : 'Question â€” click to flip'}</div>
             <div style={{ fontSize: 20, fontWeight: 600, lineHeight: 1.6 }}>{flipped ? currentCard.answer : currentCard.question}</div>
           </div>
 
           {flipped && (
             <div className="fade-in" style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
               {[
-                { label: '😕 Again', rating: 'again', color: '#ef4444' },
-                { label: '😐 Hard', rating: 'hard', color: '#f59e0b' },
-                { label: '🙂 Good', rating: 'good', color: '#22c55e' },
-                { label: '😄 Easy', rating: 'easy', color: '#6c63ff' },
+                { label: 'ðŸ˜• Again', rating: 'again', color: '#ef4444' },
+                { label: 'ðŸ˜ Hard', rating: 'hard', color: '#f59e0b' },
+                { label: 'ðŸ™‚ Good', rating: 'good', color: '#22c55e' },
+                { label: 'ðŸ˜„ Easy', rating: 'easy', color: '#6c63ff' },
               ].map(r => (
                 <button key={r.rating} onClick={() => handleRate(r.rating)} style={{
                   padding: '10px 20px', borderRadius: 12, fontWeight: 600, fontSize: 14,
@@ -166,21 +166,21 @@ export default function FlashcardsPage() {
 
       {(mode === 'add' || mode === 'generate') && (
         <div>
-          <button onClick={() => setMode('decks')} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', marginBottom: 20, fontSize: 14 }}>← Back to decks</button>
+          <button onClick={() => setMode('decks')} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', marginBottom: 20, fontSize: 14 }}>â† Back to decks</button>
           <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20 }}>{mode === 'add' ? `Add Card to "${selectedDeck?.name}"` : `AI Generate Cards for "${selectedDeck?.name}"`}</h2>
 
           {mode === 'add' ? (
             <div className="glass" style={{ borderRadius: 16, padding: 24, display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <input value={newQ} onChange={e => setNewQ(e.target.value)} placeholder="Question..." style={{ background: 'var(--bg-card-hover)', border: '1px solid var(--border)', borderRadius: 10, padding: '12px 16px', color: 'var(--text-primary)', fontSize: 14 }} />
-              <textarea value={newA} onChange={e => setNewA(e.target.value)} placeholder="Answer..." rows={4} style={{ background: 'var(--bg-card-hover)', border: '1px solid var(--border)', borderRadius: 10, padding: '12px 16px', color: 'var(--text-primary)', fontSize: 14, resize: 'vertical', fontFamily: 'inherit' }} />
+              <input value={newQ} onChange={e => setNewQ(e.target.value)} placeholder="Question..." style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, padding: '12px 16px', color: '#fff', fontSize: 14 }} />
+              <textarea value={newA} onChange={e => setNewA(e.target.value)} placeholder="Answer..." rows={4} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, padding: '12px 16px', color: '#fff', fontSize: 14, resize: 'vertical', fontFamily: 'inherit' }} />
               <button className="btn-accent" onClick={handleAddCard} disabled={loading || !newQ || !newA} style={{ alignSelf: 'flex-start' }}>Add Flashcard</button>
             </div>
           ) : (
             <div className="glass" style={{ borderRadius: 16, padding: 24, display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>Paste text from your notes, PDF content, or any study material. The AI will generate flashcards automatically.</p>
-              <textarea value={genText} onChange={e => setGenText(e.target.value)} placeholder="Paste your study text here..." rows={8} style={{ background: 'var(--bg-card-hover)', border: '1px solid var(--border)', borderRadius: 10, padding: '12px 16px', color: 'var(--text-primary)', fontSize: 14, resize: 'vertical', fontFamily: 'inherit' }} />
+              <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Paste text from your notes, PDF content, or any study material. The AI will generate flashcards automatically.</p>
+              <textarea value={genText} onChange={e => setGenText(e.target.value)} placeholder="Paste your study text here..." rows={8} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, padding: '12px 16px', color: '#fff', fontSize: 14, resize: 'vertical', fontFamily: 'inherit' }} />
               <button className="btn-accent" onClick={handleGenerateCards} disabled={loading || !genText} style={{ alignSelf: 'flex-start' }}>
-                {loading ? '✨ Generating...' : '✨ Generate with AI'}
+                {loading ? 'âœ¨ Generating...' : 'âœ¨ Generate with AI'}
               </button>
             </div>
           )}
@@ -189,3 +189,4 @@ export default function FlashcardsPage() {
     </div>
   )
 }
+

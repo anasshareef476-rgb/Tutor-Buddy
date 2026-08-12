@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { useState, useEffect, useRef } from 'react'
 
 export default function NotesPage() {
@@ -50,12 +50,12 @@ export default function NotesPage() {
             <button onClick={() => openNote(note.id)} style={{
               flex: 1, textAlign: 'left', background: active === note.id ? 'rgba(108,99,255,0.2)' : 'transparent',
               border: active === note.id ? '1px solid rgba(108,99,255,0.4)' : '1px solid transparent',
-              borderRadius: 8, padding: '8px 10px', color: 'var(--text-primary)', cursor: 'pointer', fontSize: 13,
+              borderRadius: 8, padding: '8px 10px', color: '#fff', cursor: 'pointer', fontSize: 13,
             }}>
               <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 600 }}>{note.title}</div>
               <div style={{ color: 'var(--text-muted)', fontSize: 11, marginTop: 2 }}>{new Date(note.updated).toLocaleDateString()}</div>
             </button>
-            <button onClick={() => deleteNote(note.id)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 14, flexShrink: 0 }}>×</button>
+            <button onClick={() => deleteNote(note.id)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 14, flexShrink: 0 }}>Ã—</button>
           </div>
         ))}
       </div>
@@ -68,21 +68,21 @@ export default function NotesPage() {
               value={title}
               onChange={e => updateNote(e.target.value, content)}
               placeholder="Note title..."
-              style={{ fontSize: 22, fontWeight: 700, background: 'transparent', border: 'none', outline: 'none', color: 'var(--text-primary)', marginBottom: 16, fontFamily: 'inherit' }}
+              style={{ fontSize: 22, fontWeight: 700, background: 'transparent', border: 'none', outline: 'none', color: '#fff', marginBottom: 16, fontFamily: 'inherit' }}
             />
             <div className="glass" style={{ flex: 1, borderRadius: 16, overflow: 'hidden' }}>
               <textarea
                 value={content}
                 onChange={e => updateNote(title, e.target.value)}
                 placeholder="Start writing your notes here... Use markdown syntax for formatting."
-                style={{ width: '100%', height: '100%', background: 'transparent', border: 'none', outline: 'none', color: 'var(--text-primary)', fontSize: 15, lineHeight: 1.8, fontFamily: 'inherit', padding: 24, resize: 'none', boxSizing: 'border-box' }}
+                style={{ width: '100%', height: '100%', background: 'transparent', border: 'none', outline: 'none', color: '#fff', fontSize: 15, lineHeight: 1.8, fontFamily: 'inherit', padding: 24, resize: 'none', boxSizing: 'border-box' }}
               />
             </div>
           </>
         ) : (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', textAlign: 'center', color: 'var(--text-muted)' }}>
             <div>
-              <div style={{ fontSize: 48, marginBottom: 16 }}>📒</div>
+              <div style={{ fontSize: 48, marginBottom: 16 }}>ðŸ“’</div>
               <p>Select a note or create a new one</p>
             </div>
           </div>
@@ -91,3 +91,4 @@ export default function NotesPage() {
     </div>
   )
 }
+
