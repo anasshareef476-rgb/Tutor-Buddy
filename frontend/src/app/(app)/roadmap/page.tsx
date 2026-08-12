@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState } from 'react'
 
 const API_BASE = 'http://localhost:8001/api/v1'
@@ -44,13 +44,14 @@ export default function RoadmapPage() {
   return (
     <div style={{ maxWidth: 760, margin: '0 auto' }} className="fade-in">
       <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 8 }}>ðŸ—ºï¸ AI Learning Roadmap</h1>
+      <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 8 }}>🗺️ AI Learning Roadmap</h1>
       <p style={{ color: 'var(--text-muted)', fontSize: 15, marginBottom: 28 }}>Generate a personalized weekly study plan for any subject or goal.</p>
 
       {roadmap.length === 0 && !loading && (
         <div className="glass" style={{ borderRadius: 20, padding: '32px 28px' }}>
           {error && (
             <div style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 10, padding: '12px 16px', marginBottom: 20, color: '#ef4444', fontSize: 14 }}>
-              âš ï¸ {error}
+              ⚠️ {error}
             </div>
           )}
           <div style={{ marginBottom: 20 }}>
@@ -71,7 +72,7 @@ export default function RoadmapPage() {
             width: '100%', padding: 15, background: '#fff',
             border: 'none', borderRadius: 14, color: 'white', fontWeight: 700, fontSize: 16,
             cursor: goal.trim() ? 'pointer' : 'not-allowed',
-          }}>âœ¨ Generate My Roadmap</button>
+          }}>✨ Generate My Roadmap</button>
         </div>
       )}
 
@@ -86,7 +87,7 @@ export default function RoadmapPage() {
         <div className="fade-in">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12, flexWrap: 'wrap', gap: 10 }}>
             <h2 style={{ fontSize: 20, fontWeight: 700 }}>{title}</h2>
-            <button onClick={() => { setRoadmap([]); setTitle('') }} style={{ background: 'none', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 8, padding: '6px 14px', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 13 }}>â†º Regenerate</button>
+            <button onClick={() => { setRoadmap([]); setTitle('') }} style={{ background: 'none', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 8, padding: '6px 14px', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 13 }}>↺ Regenerate</button>
           </div>
 
           <div style={{ marginBottom: 24 }}>
@@ -106,10 +107,10 @@ export default function RoadmapPage() {
                 <div key={wi} className="glass" style={{ borderRadius: 16, padding: '20px 20px', borderLeft: `3px solid ${weekComplete ? '#22c55e' : '#6c63ff'}` }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
                     <div style={{ width: 34, height: 34, borderRadius: '50%', background: weekComplete ? '#22c55e' : 'linear-gradient(135deg, #6c63ff 0%, #a855f7 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 13, flexShrink: 0 }}>
-                      {weekComplete ? 'âœ“' : week.week}
+                      {weekComplete ? '✓' : week.week}
                     </div>
                     <span style={{ fontWeight: 700, fontSize: 16 }}>Week {week.week}</span>
-                    {weekComplete && <span style={{ fontSize: 12, color: '#22c55e', background: 'rgba(34,197,94,0.12)', padding: '3px 10px', borderRadius: 20 }}>Complete âœ“</span>}
+                    {weekComplete && <span style={{ fontSize: 12, color: '#22c55e', background: 'rgba(34,197,94,0.12)', padding: '3px 10px', borderRadius: 20 }}>Complete ✓</span>}
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingLeft: 46 }}>
                     {week.topics.map((topic, ti) => (

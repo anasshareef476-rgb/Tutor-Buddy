@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { getToken, logout } from '@/lib/auth'
@@ -49,12 +49,12 @@ export default function ProgressPage() {
       {/* Summary cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 32 }}>
         {[
-          { label: 'Cards Reviewed', value: isMounted ? '0' : '-', icon: 'ðŸƒ' },
-          { label: 'Quizzes Taken', value: isMounted ? metrics.quizzes.toString() : '-', icon: 'ðŸ“' },
-          { label: 'Avg Quiz Score', value: isMounted ? `${metrics.scorePercent}%` : '-', icon: 'ðŸŽ¯' },
-          { label: 'Study Streak', value: isMounted ? '0 days' : '-', icon: 'ðŸ”¥' },
-          { label: 'Total Study Time', value: isMounted ? `${(metrics.quizzes * 0.1).toFixed(1)}h` : '-', icon: 'â±ï¸' },
-          { label: 'Questions Answered', value: isMounted ? metrics.questions.toString() : '-', icon: 'ðŸ§ ' },
+          { label: 'Cards Reviewed', value: isMounted ? '0' : '-', icon: '🗂️' },
+          { label: 'Quizzes Taken', value: isMounted ? metrics.quizzes.toString() : '-', icon: '📝' },
+          { label: 'Avg Quiz Score', value: isMounted ? `${metrics.scorePercent}%` : '-', icon: '🎯' },
+          { label: 'Study Streak', value: isMounted ? '0 days' : '-', icon: '🔥' },
+          { label: 'Total Study Time', value: isMounted ? `${(metrics.quizzes * 0.1).toFixed(1)}h` : '-', icon: '⏱️' },
+          { label: 'Questions Answered', value: isMounted ? metrics.questions.toString() : '-', icon: '🧠' },
         ].map(s => (
           <div key={s.label} className="glass glass-hover" style={{ borderRadius: 14, padding: '18px 16px' }}>
             <div style={{ fontSize: 24, marginBottom: 8 }}>{s.icon}</div>
