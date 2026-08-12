@@ -1,7 +1,12 @@
-node_modules/
+backend/venv/
+venv/
+__pycache__/
+*.pyc
 .env
 .env.*
 !.env.example
+node_modules/
+.next/
 dist/
 build/
 .vscode/
