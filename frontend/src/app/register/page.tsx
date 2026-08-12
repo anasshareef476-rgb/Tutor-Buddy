@@ -14,14 +14,14 @@ export default function RegisterPage() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault(); setLoading(true); setError('')
     try {
-      const res = await fetch('http://localhost:8001/api/v1/auth/register', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001/api/v1'}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.detail || 'Registration failed')
-      const loginRes = await fetch('http://localhost:8001/api/v1/auth/login', {
+      const loginRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001/api/v1'}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({ username: email, password }),

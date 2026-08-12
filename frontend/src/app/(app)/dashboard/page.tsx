@@ -34,7 +34,7 @@ export default function DashboardPage() {
     const token = getToken()
     if (!token) { router.push('/login'); return }
     setIsMounted(true)
-    fetch('http://localhost:8001/api/v1/progress/', {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001/api/v1'}/progress/`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
     .then(res => { if (!res.ok) { if (res.status === 401) logout(); throw new Error('') } return res.json() })

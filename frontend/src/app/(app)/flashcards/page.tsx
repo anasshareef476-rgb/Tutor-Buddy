@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 
-const API_BASE = 'http://localhost:8001/api/v1'
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001/api/v1'
 const api = {
   get: (p: string) => fetch(`${API_BASE}${p}`).then(r => r.json()),
   post: (p: string, b: any) => fetch(`${API_BASE}${p}`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(b) }).then(r => r.json()),

@@ -15,7 +15,7 @@ export default function ProgressPage() {
       return
     }
     setIsMounted(true)
-    fetch('http://localhost:8001/api/v1/progress/', {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001/api/v1'}/progress/`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
     .then(res => {
