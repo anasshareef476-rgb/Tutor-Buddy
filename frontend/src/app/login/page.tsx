@@ -34,7 +34,15 @@ export default function LoginPage() {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.detail || 'Failed to send reset link')
-      setMessage(data.message)
+      
+      if (data.token) {
+        setMessage(data.message)
+        setTimeout(() => {
+          router.push(`/reset-password?token=${data.token}`)
+        }, 1500)
+      } else {
+        setMessage(data.message)
+      }
     } catch (err: any) { setError(err.message) }
     finally { setLoading(false) }
   }

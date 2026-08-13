@@ -52,17 +52,15 @@ def login(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = 
 def forgot_password(req: ForgotPasswordRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == req.email).first()
     if not user:
-        # To prevent email enumeration, we return a success message even if the email is not found
         return {"message": "If that email exists, a reset link has been generated."}
     
     token = create_reset_token(user.email)
-    reset_link = f"http://localhost:3000/reset-password?token={token}"
     
-    # In a real application, you would use SendGrid/Mailgun/SMTP to email this link.
-    # For now, we will print it to the server console so it can be tested locally.
-    print(f"\n{'='*50}\nPASSWORD RESET LINK FOR {user.email}:\n{reset_link}\n{'='*50}\n")
-    
-    return {"message": "If that email exists, a reset link has been generated (check terminal)."}
+    # For a seamless local experience, we return the token directly so the frontend can redirect.
+    return {
+        "message": "Email found! Redirecting to reset page...",
+        "token": token
+    }
 
 @router.post("/reset-password")
 def reset_password(req: ResetPasswordRequest, db: Session = Depends(get_db)):
