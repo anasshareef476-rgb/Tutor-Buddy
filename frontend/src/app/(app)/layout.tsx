@@ -1,5 +1,5 @@
 import Sidebar from "@/components/layout/Sidebar";
-
+import AuthGuard from "@/components/auth/AuthGuard";
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: '#000' }}>
@@ -11,7 +11,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         background: '#000',
         minWidth: 0,
       }} className="app-main">
-        {children}
+        <AuthGuard>{children}</AuthGuard>
       </main>
       <style>{`
         @media (max-width: 768px) {
