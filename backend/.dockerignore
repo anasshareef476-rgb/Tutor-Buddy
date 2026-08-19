@@ -1,0 +1,11 @@
+__pycache__
+*.pyc
+*.pyo
+venv/
+.env
+.DS_Store
+ai_tutor.db
+chroma_db/
+uploads/
+rag_test_response.txt
+test_doc.txt

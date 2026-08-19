@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backend
+    container_name: tutorbuddy_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data/ai_tutor.db:/app/ai_tutor.db
+      - ./data/chroma_db:/app/chroma_db
+      - ./data/uploads:/app/uploads
+    # environment:
+    #   - GEMINI_API_KEY=your_key_here
+
+  frontend:
+    build: ./frontend
+    container_name: tutorbuddy_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - BACKEND_URL=http://backend:8000
+    depends_on:
+      - backend
