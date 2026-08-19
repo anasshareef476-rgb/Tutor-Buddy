@@ -43,7 +43,6 @@ export default function RoadmapPage() {
 
   return (
     <div style={{ maxWidth: 760, margin: '0 auto' }} className="fade-in">
-      <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 8 }}>ðŸ—ºï¸ AI Learning Roadmap</h1>
       <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 8 }}>🗺️ AI Learning Roadmap</h1>
       <p style={{ color: 'var(--text-muted)', fontSize: 15, marginBottom: 28 }}>Generate a personalized weekly study plan for any subject or goal.</p>
 
@@ -70,7 +69,7 @@ export default function RoadmapPage() {
           </div>
           <button onClick={generateRoadmap} disabled={!goal.trim()} style={{
             width: '100%', padding: 15, background: '#fff',
-            border: 'none', borderRadius: 14, color: 'white', fontWeight: 700, fontSize: 16,
+            border: 'none', borderRadius: 14, color: '#000', fontWeight: 700, fontSize: 16,
             cursor: goal.trim() ? 'pointer' : 'not-allowed',
           }}>✨ Generate My Roadmap</button>
         </div>

@@ -36,9 +36,9 @@ def generate_chat_response(prompt: str, history: list = None, context: str = "")
         if history:
             for msg in history:
                 role = "user" if msg["role"] == "user" else "model"
-                contents.append(types.Content(role=role, parts=[types.Part.from_text(msg["content"])]))
+                contents.append(types.Content(role=role, parts=[types.Part.from_text(text=msg["content"])]))
         
-        user_parts = [types.Part.from_text(prompt)]
+        user_parts = [types.Part.from_text(text=prompt)]
         contents.append(types.Content(role="user", parts=user_parts))
         
         config = types.GenerateContentConfig(

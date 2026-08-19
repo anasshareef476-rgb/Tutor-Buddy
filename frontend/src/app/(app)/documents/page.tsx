@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
@@ -19,8 +19,27 @@ export default function DocumentsPage() {
   const [msg, setMsg] = useState('')
   const [msgType, setMsgType] = useState<'success'|'error'|'info'>('info')
 
-  useEffect(() => { loadDocs() }, [])
-  const loadDocs = async () => { try { setDocs(await getDocuments()) } catch { } }
+  const [pollTrigger, setPollTrigger] = useState(0)
+  
+  useEffect(() => {
+    let active = true
+    const poll = async () => {
+      if (!active) return
+      try {
+        const data = await getDocuments()
+        if (!active) return
+        setDocs(data)
+        const hasProcessing = data.some((d: Document) => d.status === 'processing' || d.status === 'pending')
+        if (hasProcessing) {
+          setTimeout(poll, 2000)
+        }
+      } catch {}
+    }
+    poll()
+    return () => { active = false }
+  }, [pollTrigger])
+
+  const loadDocs = () => setPollTrigger(p => p + 1)
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -87,6 +106,7 @@ export default function DocumentsPage() {
                 <div style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 2 }}>{doc.file_type.toUpperCase()} · {new Date(doc.created_at).toLocaleDateString()}</div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 12px', borderRadius: 999, background: `${statusColor[doc.status] || '#888'}1a`, border: `1px solid ${statusColor[doc.status] || '#888'}44`, fontSize: 12, color: statusColor[doc.status] || '#888', flexShrink: 0, textTransform: 'capitalize' }}>
+                {(doc.status === 'processing' || doc.status === 'pending') && <span style={{ display: 'inline-block', animation: 'spin 2s linear infinite' }}>⏳</span>}
                 {doc.status}
               </div>
               <button onClick={e => { e.stopPropagation(); deleteDocument(doc.id).then(loadDocs) }} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 16, padding: 4, flexShrink: 0 }} title="Delete">×</button>

@@ -29,7 +29,7 @@ function ResetPasswordForm() {
     
     setLoading(true); setError(''); setMessage('')
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001/api/v1'}/auth/reset-password`, { 
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || '/api/v1'}/auth/reset-password`, { 
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' }, 
         body: JSON.stringify({ token, new_password: password }) 

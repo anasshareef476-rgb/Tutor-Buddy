@@ -66,7 +66,7 @@ export default function QuizPage() {
 
   return (
     <div style={{ maxWidth: 720, margin: '0 auto' }} className="fade-in">
-      <motion.h1 initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} style={{ fontSize: 26, fontWeight: 800, marginBottom: 8 }}>ðŸ“ AI Quiz Generator</motion.h1>
+      <motion.h1 initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} style={{ fontSize: 26, fontWeight: 800, marginBottom: 8 }}>📝 AI Quiz Generator</motion.h1>
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} style={{ color: 'var(--text-muted)', fontSize: 15, marginBottom: 28 }}>Generate instant quizzes on any topic using Tutor Buddy.</motion.p>
 
       <AnimatePresence mode="wait">
@@ -100,17 +100,17 @@ export default function QuizPage() {
                 cursor: 'pointer', outline: 'none'
               }}
             >
-              <option value={3}>3 Questions</option>
-              <option value={5}>5 Questions</option>
-              <option value={10}>10 Questions</option>
-              <option value={15}>15 Questions</option>
+              <option value={3} style={{ color: '#000' }}>3 Questions</option>
+              <option value={5} style={{ color: '#000' }}>5 Questions</option>
+              <option value={10} style={{ color: '#000' }}>10 Questions</option>
+              <option value={15} style={{ color: '#000' }}>15 Questions</option>
             </select>
             <motion.button
               whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
               onClick={generateQuiz} disabled={!topic.trim()}
               style={{
                 background: '#fff', color: '#000', border: 'none',
-                borderRadius: 12, padding: '12px 24px', color: 'white', fontWeight: 700,
+                borderRadius: 12, padding: '12px 24px', fontWeight: 700,
                 cursor: topic.trim() ? 'pointer' : 'not-allowed', fontSize: 15, whiteSpace: 'nowrap',
                 opacity: topic.trim() ? 1 : 0.6
               }}>
@@ -193,7 +193,7 @@ export default function QuizPage() {
 
       {done && (
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="glass" style={{ borderRadius: 24, padding: '48px 32px', textAlign: 'center', background: 'rgba(255,255,255,0.02)' }}>
-          <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }} style={{ fontSize: 64, marginBottom: 16 }}>{score / quiz.length >= 0.8 ? 'ðŸ†' : score / quiz.length >= 0.5 ? 'ðŸŽ¯' : 'ðŸ“š'}</motion.div>
+          <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }} style={{ fontSize: 64, marginBottom: 16 }}>{score / quiz.length >= 0.8 ? '🏆' : score / quiz.length >= 0.5 ? '🎯' : '📚'}</motion.div>
           <h2 style={{ fontSize: 28, fontWeight: 900, marginBottom: 8 }}>Quiz Complete!</h2>
           <p style={{ color: 'var(--text-muted)', marginBottom: 20 }}>Your score on <strong>{topic}</strong></p>
           <div style={{ fontSize: 60, fontWeight: 900, background: '#fff', color: '#000', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: 6 }}>

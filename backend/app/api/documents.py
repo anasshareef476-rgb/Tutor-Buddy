@@ -28,25 +28,21 @@ def process_document(doc_id: int, filepath: str, db_url: str):
         doc.status = "processing"
         db.commit()
 
-        text = ""
-        if filepath.endswith(".pdf"):
-            with open(filepath, "rb") as f:
-                reader = PyPDF2.PdfReader(f)
-                for page in reader.pages:
-                    text += page.extract_text() or ""
-        elif filepath.endswith(".txt"):
-            with open(filepath, "r", encoding="utf-8") as f:
-                text = f.read()
-        elif filepath.endswith(".docx"):
-            import docx
-            doc_obj = docx.Document(filepath)
-            text = "\n".join([para.text for para in doc_obj.paragraphs])
-
-        # Store extracted text summary in description (simplified for now)
-        doc.content = text
+        # Process with RAG to chunk and store in ChromaDB
+        from app.services.rag import process_and_store_document
+        with open(filepath, "rb") as f:
+            file_bytes = f.read()
+            
+        num_chunks = process_and_store_document(file_bytes, doc.filename, doc.user_id)
+        
+        # We can still store raw text in the DB for reference if needed, 
+        # but let's just mark it as completed.
+        doc.content = f"Processed {num_chunks} chunks into Vector DB."
         doc.status = "completed"
         db.commit()
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         doc.status = "error"
         db.commit()
     finally:
@@ -61,8 +57,9 @@ async def upload_document(background_tasks: BackgroundTasks, file: UploadFile = 
         raise HTTPException(status_code=400, detail="Unsupported file type")
 
     filepath = os.path.join(UPLOAD_DIR, f"{user_id}_{file.filename}")
+    content = await file.read()
     with open(filepath, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+        buffer.write(content)
 
     doc = Document(user_id=user_id, filename=file.filename, file_type=ext.lstrip("."), status="pending")
     db.add(doc)
@@ -74,7 +71,7 @@ async def upload_document(background_tasks: BackgroundTasks, file: UploadFile = 
 
     return {"id": doc.id, "filename": file.filename, "status": "pending"}
 
-@router.get("/")
+@router.get("")
 def get_documents(db: Session = Depends(get_db)):
     user_id = 1
     docs = db.query(Document).filter(Document.user_id == user_id).order_by(Document.created_at.desc()).all()

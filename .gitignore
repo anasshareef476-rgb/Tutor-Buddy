@@ -12,3 +12,9 @@ build/
 .vscode/
 .idea/
 *.log
+backend/ai_tutor.db
+backend/chroma_db/
+backend/uploads/
+backend/rag_test_response.txt
+backend/test_doc.txt
+frontend_test.html

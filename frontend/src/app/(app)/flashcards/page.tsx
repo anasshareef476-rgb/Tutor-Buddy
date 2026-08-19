@@ -49,7 +49,7 @@ export default function FlashcardsPage() {
     const card = dueCards[reviewIndex]
     await reviewCard(card.id, rating as any)
     if (reviewIndex + 1 >= dueCards.length) {
-      setMsg('ðŸŽ‰ Session complete! All due cards reviewed.')
+      setMsg('🎉 Session complete! All due cards reviewed.')
       setMode('decks'); loadDecks()
     } else {
       setReviewIndex(i => i + 1)
@@ -85,13 +85,14 @@ export default function FlashcardsPage() {
       {msg && (
         <div style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.3)', borderRadius: 10, padding: '10px 16px', marginBottom: 20, color: '#22c55e', fontSize: 14 }}>
           {msg} <button onClick={() => setMsg('')} style={{ float: 'right', background: 'none', border: 'none', color: '#22c55e', cursor: 'pointer' }}>Ã—</button>
+          {msg} <button onClick={() => setMsg('')} style={{ float: 'right', background: 'none', border: 'none', color: '#22c55e', cursor: 'pointer' }}>×</button>
         </div>
       )}
 
       {mode === 'decks' && (
         <>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-            <h1 style={{ fontFamily:'var(--font-display)', fontSize: 26, fontWeight: 400 }}>ðŸƒ Flashcard Decks</h1>
+            <h1 style={{ fontFamily:'var(--font-display)', fontSize: 26, fontWeight: 400 }}>🎴 Flashcard Decks</h1>
             <div style={{ display: 'flex', gap: 10 }}>
               <input value={newDeckName} onChange={e => setNewDeckName(e.target.value)} placeholder="New deck name..." style={{ background: '#111113', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, padding: '8px 14px', color: '#fff', fontSize: 14 }} />
               <button className="btn-accent" onClick={async () => { if (!newDeckName) return; await createDeck(newDeckName); setNewDeckName(''); loadDecks() }}>+ Create</button>
@@ -105,7 +106,7 @@ export default function FlashcardsPage() {
               <div key={deck.id} className="glass glass-hover" style={{ borderRadius: 16, padding: 20, cursor: 'pointer' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
                   <h3 style={{ fontWeight: 700, fontSize: 16 }}>{deck.name}</h3>
-                  <button onClick={() => deleteDeck(deck.id).then(loadDecks)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 14 }}>ðŸ—‘</button>
+                  <button onClick={() => deleteDeck(deck.id).then(loadDecks)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 14 }}>🗑️</button>
                 </div>
                 <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
                   <div style={{ fontSize: 13, color: 'var(--text-muted)' }}><strong style={{ color: '#fff' }}>{deck.total_cards}</strong> cards</div>

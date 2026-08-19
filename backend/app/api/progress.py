@@ -12,7 +12,7 @@ class QuizResult(BaseModel):
     score: int
     questions: int
 
-@router.get("/")
+@router.get("")
 def get_progress(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     progress = db.query(Progress).filter(Progress.user_id == current_user.id).first()
     if not progress:

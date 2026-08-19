@@ -64,15 +64,20 @@ def forgot_password(req: ForgotPasswordRequest, db: Session = Depends(get_db)):
 
 @router.post("/reset-password")
 def reset_password(req: ResetPasswordRequest, db: Session = Depends(get_db)):
-    email = verify_reset_token(req.token)
-    if not email:
-        raise HTTPException(status_code=400, detail="Invalid or expired reset token")
+    try:
+        email = verify_reset_token(req.token)
+        if not email:
+            raise HTTPException(status_code=400, detail="Invalid or expired reset token")
         
-    user = db.query(User).filter(User.email == email).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        user = db.query(User).filter(User.email == email).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
         
-    user.hashed_password = get_password_hash(req.new_password)
-    db.commit()
-    
-    return {"message": "Password has been successfully reset"}
+        user.hashed_password = get_password_hash(req.new_password)
+        db.commit()
+        
+        return {"message": "Password has been successfully reset"}
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise e

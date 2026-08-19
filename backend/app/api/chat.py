@@ -10,7 +10,7 @@ from app.models.chat import Chat, ChatMessage
 
 router = APIRouter()
 
-@router.post("/")
+@router.post("")
 def send_message(
     message: str = Form(...),
     chat_id: Optional[int] = Form(None),
@@ -37,17 +37,9 @@ def send_message(
     db.add(ChatMessage(chat_id=chat.id, role="user", content=message))
     db.commit()
 
-    # Fetch documents for context
-    from app.models.document import Document
-    docs = db.query(Document).filter(Document.user_id == user_id, Document.status == "completed").all()
-    context_text = ""
-    valid_docs = [d for d in docs if d.content and len(d.content.strip()) > 0]
-    
-    if valid_docs:
-        context_text = "--- USER UPLOADED DOCUMENTS ---\nThe user has uploaded the following documents. Use this knowledge to answer their questions if relevant.\n\n"
-        for d in valid_docs:
-            context_text += f"Document: {d.filename}\n{d.content[:8000]}\n\n"
-        context_text += "-------------------------------\n"
+    # Fetch documents for context using RAG
+    from app.services.rag import retrieve_context
+    context_text = retrieve_context(message, user_id=user_id, top_k=3)
 
     # Generate AI response
     ai_text = generate_chat_response(prompt=message, history=history_dicts, context=context_text)
@@ -58,7 +50,7 @@ def send_message(
 
     return {"chat_id": chat.id, "user_message": message, "ai_response": ai_text}
 
-@router.get("/")
+@router.get("")
 def get_chats(db: Session = Depends(get_db)):
     user_id = 1
     chats = db.query(Chat).filter(Chat.user_id == user_id).order_by(Chat.updated_at.desc()).all()

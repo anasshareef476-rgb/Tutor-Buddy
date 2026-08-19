@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -34,7 +34,7 @@ export default function DashboardPage() {
     const token = getToken()
     if (!token) { router.push('/login'); return }
     setIsMounted(true)
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001/api/v1'}/progress/`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || '/api/v1'}/progress/`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
     .then(res => { if (!res.ok) { if (res.status === 401) logout(); throw new Error('') } return res.json() })
@@ -109,9 +109,9 @@ export default function DashboardPage() {
       <div className="glass anim-slide-up delay-4" style={{ borderRadius:20, padding:'24px 26px', marginBottom:28 }}>
         <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
           {Array.from({ length: 35 }, (_, i) => {
-            const isActive = isMounted && i % 7 === 0 && i < metrics.quizzes * 5
+            const isActive = isMounted && (34 - i) < metrics.quizzes;
             return (
-              <div key={i} className={isActive ? 'anim-scale-in' : ''} style={{ width:20, height:20, borderRadius:6, background: isActive ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.05)', border:'1px solid rgba(255,255,255,0.05)', transition:'background 0.3s, box-shadow 0.3s', boxShadow: isActive ? '0 0 8px rgba(255,255,255,0.4)' : 'none' }} />
+              <div key={i} className={isActive ? 'anim-scale-in' : ''} style={{ width:20, height:20, borderRadius:6, background: isActive ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.05)', border:'1px solid rgba(255,255,255,0.05)', transition:'background 0.3s, box-shadow 0.3s', boxShadow: isActive ? '0 0 8px rgba(255,255,255,0.4)' : 'none' }} title={isActive ? 'Activity logged' : 'No activity'} />
             )
           })}
         </div>

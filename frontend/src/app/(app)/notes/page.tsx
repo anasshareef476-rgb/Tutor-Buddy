@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState, useEffect, useRef } from 'react'
 
 export default function NotesPage() {
@@ -82,7 +82,7 @@ export default function NotesPage() {
         ) : (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', textAlign: 'center', color: 'var(--text-muted)' }}>
             <div>
-              <div style={{ fontSize: 48, marginBottom: 16 }}>ðŸ“’</div>
+              <div style={{ fontSize: 48, marginBottom: 16 }}>📓</div>
               <p>Select a note or create a new one</p>
             </div>
           </div>

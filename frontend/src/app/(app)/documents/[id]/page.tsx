@@ -79,7 +79,7 @@ export default function DocumentViewPage({ params }: { params: Promise<{ id: str
           onClick={() => router.push(`/chat?docName=${encodeURIComponent(doc.filename)}`)}
           style={{
             background: 'var(--gradient-1)', border: 'none', borderRadius: 12, padding: '12px 20px', 
-            color: 'white', cursor: 'pointer', fontWeight: 700, fontSize: 15,
+            color: '#000', cursor: 'pointer', fontWeight: 700, fontSize: 15,
             boxShadow: '0 4px 12px rgba(108, 99, 255, 0.3)',
             display: 'flex', alignItems: 'center', gap: 8, transition: 'transform 0.2s'
           }}
