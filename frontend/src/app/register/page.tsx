@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState } from 'react'
 import Link from 'next/link'
 import { setToken } from '@/lib/auth'
@@ -34,10 +34,17 @@ export default function RegisterPage() {
   }
 
   return (
-    <div style={{ minHeight:'100vh', background:'#000', display:'flex', alignItems:'center', justifyContent:'center', padding:20 }}>
-      <div className="page-enter" style={{ width:'100%', maxWidth:420 }}>
+    <div style={{ minHeight:'100vh', background:'#000', position: 'relative', overflow: 'hidden', display:'flex', alignItems:'center', justifyContent:'center', padding:20 }}>
+      {/* Cool Watercolor Background & Floating Texts */}
+      <div className="watercolor-bg" />
+      <div className="floating-text" style={{ top: '10%', left: '-5%', animation: 'floatDir1 25s infinite ease-in-out' }}>AI TUTOR</div>
+      <div className="floating-text" style={{ top: '40%', right: '-10%', animation: 'floatDir2 30s infinite ease-in-out' }}>LEARN FAST</div>
+      <div className="floating-text" style={{ bottom: '10%', left: '15%', animation: 'floatDir1 28s infinite ease-in-out', fontSize: 'clamp(40px, 8vw, 100px)' }}>MASTER EVERYTHING</div>
+
+      {/* Form Container */}
+      <div className="page-enter glass" style={{ width:'100%', maxWidth:420, position: 'relative', zIndex: 10, padding: '40px 30px', borderRadius: 24, border: '1px solid var(--border)' }}>
         <div style={{ textAlign:'center', marginBottom:40 }}>
-          <div style={{ width:56, height:56, borderRadius:'50%', background:'#fff', display:'grid', placeItems:'center', margin:'0 auto 16px', boxShadow:'0 8px 32px rgba(255,255,255,0.15)' }}>
+          <div style={{ width:56, height:56, borderRadius:'50%', background:'#fff', display:'grid', placeItems:'center', margin:'0 auto 16px', animation:'floatY 4s ease-in-out infinite', boxShadow:'0 8px 32px rgba(255,255,255,0.15)' }}>
             <span style={{ fontSize:26 }}>🎓</span>
           </div>
           <h1 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(26px,4vw,38px)', fontWeight:400, letterSpacing:'-0.04em', color:'#fff', marginBottom:8 }}>Create Account</h1>
@@ -52,8 +59,8 @@ export default function RegisterPage() {
         )}
 
         <form onSubmit={handleRegister} style={{ display:'flex', flexDirection:'column', gap:14 }}>
-          <input type="email" placeholder="Email address" required value={email} onChange={e => setEmail(e.target.value)} className="input-dark" style={{ fontSize:15, padding:'14px 18px' }} />
-          <input type="password" placeholder="Password (min 6 chars)" required minLength={6} value={password} onChange={e => setPassword(e.target.value)} className="input-dark" style={{ fontSize:15, padding:'14px 18px' }} />
+          <input type="email" placeholder="Email address" required value={email} onChange={e => setEmail(e.target.value)} className="input-dark" style={{ fontSize:15, padding:'14px 18px', background: 'rgba(0,0,0,0.4)' }} />
+          <input type="password" placeholder="Password (min 6 chars)" required minLength={6} value={password} onChange={e => setPassword(e.target.value)} className="input-dark" style={{ fontSize:15, padding:'14px 18px', background: 'rgba(0,0,0,0.4)' }} />
           <button type="submit" disabled={loading} className="btn-accent" style={{ width:'100%', padding:'14px', borderRadius:14, fontSize:15, marginTop:4 }}>
             {loading ? <span className="spinner" style={{ margin:'0 auto' }}/> : 'Create Account'}
           </button>

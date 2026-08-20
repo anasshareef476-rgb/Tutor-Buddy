@@ -48,8 +48,15 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{ minHeight:'100vh', background:'#000', display:'flex', alignItems:'center', justifyContent:'center', padding:20 }}>
-      <div className="page-enter" style={{ width:'100%', maxWidth:420 }}>
+    <div style={{ minHeight:'100vh', background:'#000', position: 'relative', overflow: 'hidden', display:'flex', alignItems:'center', justifyContent:'center', padding:20 }}>
+      {/* Cool Watercolor Background & Floating Texts */}
+      <div className="watercolor-bg" />
+      <div className="floating-text" style={{ top: '10%', left: '-5%', animation: 'floatDir1 25s infinite ease-in-out' }}>AI TUTOR</div>
+      <div className="floating-text" style={{ top: '40%', right: '-10%', animation: 'floatDir2 30s infinite ease-in-out' }}>LEARN FAST</div>
+      <div className="floating-text" style={{ bottom: '10%', left: '15%', animation: 'floatDir1 28s infinite ease-in-out', fontSize: 'clamp(40px, 8vw, 100px)' }}>MASTER EVERYTHING</div>
+      
+      {/* Form Container */}
+      <div className="page-enter glass" style={{ width:'100%', maxWidth:420, position: 'relative', zIndex: 10, padding: '40px 30px', borderRadius: 24, border: '1px solid var(--border)' }}>
         {/* Logo */}
         <div style={{ textAlign:'center', marginBottom:40 }}>
           <div style={{ width:56, height:56, borderRadius:'50%', background:'#fff', display:'grid', placeItems:'center', margin:'0 auto 16px', animation:'floatY 4s ease-in-out infinite', boxShadow:'0 8px 32px rgba(255,255,255,0.15)' }}>
@@ -81,10 +88,10 @@ export default function LoginPage() {
           <>
             <form onSubmit={handleLogin} style={{ display:'flex', flexDirection:'column', gap:14 }}>
               <input type="email" placeholder="Email address" required value={email} onChange={e => setEmail(e.target.value)}
-                className="input-dark" style={{ fontSize:15, padding:'14px 18px' }} />
+                className="input-dark" style={{ fontSize:15, padding:'14px 18px', background: 'rgba(0,0,0,0.4)' }} />
               <div>
                 <input type="password" placeholder="Password" required value={password} onChange={e => setPassword(e.target.value)}
-                  className="input-dark" style={{ fontSize:15, padding:'14px 18px', width:'100%' }} />
+                  className="input-dark" style={{ fontSize:15, padding:'14px 18px', width:'100%', background: 'rgba(0,0,0,0.4)' }} />
                 <div style={{ textAlign:'right', marginTop:8 }}>
                   <button type="button" onClick={() => setView('forgot')} style={{ background:'none', border:'none', color:'var(--text-muted)', fontSize:13, cursor:'pointer' }}>Forgot password?</button>
                 </div>
@@ -101,11 +108,11 @@ export default function LoginPage() {
         ) : (
           <form onSubmit={handleForgotPassword} style={{ display:'flex', flexDirection:'column', gap:14 }}>
             <input type="email" placeholder="Email address" required value={email} onChange={e => setEmail(e.target.value)}
-              className="input-dark" style={{ fontSize:15, padding:'14px 18px' }} />
+              className="input-dark" style={{ fontSize:15, padding:'14px 18px', background: 'rgba(0,0,0,0.4)' }} />
             <button type="submit" disabled={loading} className="btn-accent" style={{ width:'100%', padding:'14px', borderRadius:14, fontSize:15 }}>
               {loading ? <span className="spinner" style={{ margin:'0 auto' }}/> : 'Send Reset Link'}
             </button>
-            <button onClick={() => { setView('main'); setMessage(''); setError('') }} type="button" className="btn-secondary" style={{ width:'100%', padding:'14px', borderRadius:14, fontSize:15, marginTop:8 }}>
+            <button onClick={() => { setView('main'); setMessage(''); setError('') }} type="button" className="btn-secondary" style={{ width:'100%', padding:'14px', borderRadius:14, fontSize:15, marginTop:8, background: 'rgba(255,255,255,0.05)' }}>
               Back to Login
             </button>
           </form>

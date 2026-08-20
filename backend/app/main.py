@@ -23,7 +23,7 @@ app.add_middleware(
 )
 
 # Routers
-from app.api import auth, chat, flashcards, documents, quiz, ai, progress
+from app.api import auth, chat, flashcards, documents, quiz, ai, progress, contact
 app.include_router(auth.router,       prefix="/api/v1/auth",       tags=["Auth"])
 app.include_router(chat.router,       prefix="/api/v1/chats",      tags=["Chat"])
 app.include_router(flashcards.router, prefix="/api/v1/flashcards", tags=["Flashcards"])
@@ -31,6 +31,7 @@ app.include_router(documents.router,  prefix="/api/v1/documents",  tags=["Docume
 app.include_router(quiz.router,       prefix="/api/v1/quiz",       tags=["Quiz"])
 app.include_router(ai.router,         prefix="/api/v1/ai",         tags=["AI Utilities"])
 app.include_router(progress.router,   prefix="/api/v1/progress",   tags=["Progress"])
+app.include_router(contact.router,    prefix="/api/v1/contact",    tags=["Contact"])
 
 @app.get("/")
 def read_root():

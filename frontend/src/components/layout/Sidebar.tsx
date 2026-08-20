@@ -13,6 +13,7 @@ const navItems = [
   { href: '/notes',      icon: '◈', label: 'Notes' },
   { href: '/roadmap',    icon: '◎', label: 'Roadmap' },
   { href: '/progress',   icon: '#', label: 'Progress' },
+  { href: '/contact',    icon: '✉', label: 'Contact Support' },
 ]
 
 export default function Sidebar() {
